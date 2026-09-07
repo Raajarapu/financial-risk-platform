@@ -1,0 +1,18 @@
+Loan Policy - Synthetic Project Knowledge
+
+Purpose:
+This document provides synthetic policy guidance for the financial risk demonstration system. It is not a real lending policy and must not be used for real credit decisions.
+
+General principles:
+- Evaluate repayment capacity before considering loan approval.
+- Consider income, debt burden, credit utilization, delinquency history, recent inquiries, and previous adverse credit events together.
+- A single metric should not be treated as a guaranteed indicator of default.
+- Higher observed risk should lead to additional review rather than an automatic lending decision.
+
+Risk interpretation:
+- Low risk: applicant indicators generally support repayment capacity and show limited recent adverse behavior.
+- Medium risk: one or more indicators require additional review.
+- High risk: multiple indicators suggest elevated repayment or credit-management risk.
+
+Recommended action:
+Use the model result as a decision-support signal. Perform additional verification and human review before any real lending decision.
