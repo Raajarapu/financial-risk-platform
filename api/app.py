@@ -1,4 +1,4 @@
-import os
+ import os
 import joblib
 import pandas as pd
 
@@ -80,7 +80,11 @@ class FinancialFeatureEngineer(BaseEstimator, TransformerMixin):
 # Paths
 # ============================================================
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
 
 MODEL_PATH = os.path.join(
     BASE_DIR,
@@ -102,16 +106,18 @@ CHROMA_PATH = os.path.join(
 
 
 # ============================================================
-# Load ML model
+# Load ML Model
 # ============================================================
 
-artifact = joblib.load(MODEL_PATH)
+artifact = joblib.load(
+    MODEL_PATH
+)
 
 ml_pipeline = artifact["model"]
 
 
 # ============================================================
-# RAG setup
+# RAG Setup
 # ============================================================
 
 loader = DirectoryLoader(
@@ -126,7 +132,9 @@ splitter = RecursiveCharacterTextSplitter(
     chunk_overlap=80
 )
 
-chunks = splitter.split_documents(documents)
+chunks = splitter.split_documents(
+    documents
+)
 
 embeddings = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
@@ -147,7 +155,8 @@ def retrieve_context(query, k=4):
     )
 
     return "\n\n".join(
-        f"[Source: {doc.metadata.get('source', 'unknown')}]\n{doc.page_content}"
+        f"[Source: {doc.metadata.get('source', 'unknown')}]\n"
+        f"{doc.page_content}"
         for doc in docs
     )
 
@@ -159,8 +168,7 @@ def retrieve_context(query, k=4):
 llm = pipeline(
     "text-generation",
     model="Qwen/Qwen2.5-0.5B-Instruct",
-    device_map="auto",
-    torch_dtype="auto"
+    device=-1
 )
 
 
@@ -193,11 +201,13 @@ app = Flask(
 @app.route("/", methods=["GET"])
 def home():
 
-    return render_template("index.html")
+    return render_template(
+        "index.html"
+    )
 
 
 # ============================================================
-# Health
+# Health Check
 # ============================================================
 
 @app.route("/health", methods=["GET"])
@@ -210,7 +220,7 @@ def health():
 
 
 # ============================================================
-# Model information
+# Model Information
 # ============================================================
 
 @app.route("/model-info", methods=["GET"])
@@ -232,15 +242,19 @@ def predict():
 
     data = request.get_json()
 
-    applicant_df = pd.DataFrame([data])
+    applicant_df = pd.DataFrame(
+        [data]
+    )
 
     probability = ml_pipeline.predict_proba(
         applicant_df
     )[0, 1]
 
     risk_level = (
-        "High" if probability >= 0.60
-        else "Medium" if probability >= 0.30
+        "High"
+        if probability >= 0.60
+        else "Medium"
+        if probability >= 0.30
         else "Low"
     )
 
@@ -262,22 +276,88 @@ def analyze():
 
     data = request.get_json()
 
-    applicant_df = pd.DataFrame([data])
+    # ========================================================
+    # Required categorical fields
+    # ========================================================
+    # The web UI sends the core numeric applicant fields.
+    # The trained ML pipeline also expects these fields.
+    # Therefore, provide safe default values when they
+    # are not supplied by the client.
+    # ========================================================
+
+    data.setdefault(
+        "Marital_Status",
+        "Single"
+    )
+
+    data.setdefault(
+        "Education_Level",
+        "Bachelor"
+    )
+
+    data.setdefault(
+        "Employment_Status",
+        "Employed"
+    )
+
+    data.setdefault(
+        "Home_Ownership",
+        "Rent"
+    )
+
+    data.setdefault(
+        "Loan_Purpose",
+        "Personal"
+    )
+
+    data.setdefault(
+        "Region",
+        "South"
+    )
+
+    # This feature is numeric in the trained model.
+    data.setdefault(
+        "Delinquency_History",
+        0
+    )
+
+    data.setdefault(
+        "Has_Employment_Income",
+        1
+    )
+
+    applicant_df = pd.DataFrame(
+        [data]
+    )
+
+    # ========================================================
+    # ML Prediction
+    # ========================================================
 
     risk_probability = ml_pipeline.predict_proba(
         applicant_df
     )[0, 1]
 
     risk_level = (
-        "High" if risk_probability >= 0.60
-        else "Medium" if risk_probability >= 0.30
+        "High"
+        if risk_probability >= 0.60
+        else "Medium"
+        if risk_probability >= 0.30
         else "Low"
     )
+
+    # ========================================================
+    # RAG Retrieval
+    # ========================================================
 
     context = retrieve_context(
         "loan default risk debt credit utilization delinquency",
         k=4
     )
+
+    # ========================================================
+    # LLM Prompt
+    # ========================================================
 
     prompt = f"""
 You are a financial risk analysis assistant.
@@ -308,7 +388,17 @@ Do not invent applicant information.
 Do not make a guaranteed lending decision.
 """
 
-    answer = generate_response(prompt)
+    # ========================================================
+    # LLM Generation
+    # ========================================================
+
+    answer = generate_response(
+        prompt
+    )
+
+    # ========================================================
+    # Final Response
+    # ========================================================
 
     return jsonify({
         "risk_probability": round(
@@ -321,7 +411,7 @@ Do not make a guaranteed lending decision.
 
 
 # ============================================================
-# Application entry point
+# Application Entry Point
 # ============================================================
 
 if __name__ == "__main__":
