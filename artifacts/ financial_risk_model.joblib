@@ -1,0 +1,6 @@
+{
+    "model": ml_pipeline,
+    "target": "SeriousDlqin2yrs",
+    "features": X.columns.tolist(),
+    "version": "1.0.0"
+}
