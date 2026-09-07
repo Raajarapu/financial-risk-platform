@@ -1,0 +1,16 @@
+Credit Risk Guidelines - Synthetic Project Knowledge
+
+Credit utilization:
+Credit utilization represents the proportion of available revolving credit currently being used. Higher utilization can indicate increased dependence on available credit.
+
+Recent credit inquiries:
+Multiple recent inquiries may indicate active credit seeking. This should be considered together with income, debt, payment history, and other credit indicators.
+
+Credit history:
+A longer, established credit history can provide more behavioral information. Credit history length should not be interpreted independently from repayment behavior.
+
+Bankruptcy and tax liens:
+Previous bankruptcies and tax liens may be relevant adverse indicators. They require context and should not be treated as automatic rejection criteria.
+
+Important:
+These guidelines are synthetic educational content for a demonstration system.
