@@ -1,0 +1,19 @@
+Debt-to-Income Guidance - Synthetic Project Knowledge
+
+Debt-to-income analysis compares debt obligations with income and is used as a repayment-capacity indicator.
+
+Interpretation:
+- Lower debt relative to income generally indicates stronger repayment capacity.
+- Higher debt relative to income can indicate greater repayment pressure.
+- Loan amount, loan term, monthly loan burden, income, and existing debt should be evaluated together.
+
+The project also derives the following financial features:
+- Loan-to-Income
+- Debt-to-Income
+- Available Credit
+- Monthly Loan Burden
+- Income per Dependent
+
+These derived features support the machine-learning risk model.
+
+This document is synthetic educational content and is not a real lender policy.
