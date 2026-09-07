@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+ FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -7,7 +7,10 @@ ENV PYTHONUNBUFFERED=1
 
 COPY api/requirements.txt /app/requirements.txt
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir torch \
+    --index-url https://download.pytorch.org/whl/cpu
+
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY api /app/api
 COPY artifacts /app/artifacts
