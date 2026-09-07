@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Financial Risk Analyzer</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>💰 Financial Risk & Loan Analysis</h1>
+
+<p>
+Enter applicant information to generate an AI-powered financial risk analysis.
+</p>
+
+<div class="grid">
+
+    <input id="Age" type="number" placeholder="Age">
+
+    <select id="Gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select>
+
+    <input id="Employment_Years" type="number" placeholder="Employment Years">
+
+    <input id="Number_of_Dependents" type="number" placeholder="Dependents">
+
+    <input id="Monthly_Income" type="number" placeholder="Monthly Income">
+
+    <input id="Annual_Income" type="number" placeholder="Annual Income">
+
+    <input id="Credit_Limit" type="number" placeholder="Credit Limit">
+
+    <input id="Credit_Utilization" type="number" step="0.01"
+           placeholder="Credit Utilization (0-1)">
+
+    <input id="Credit_History_Years" type="number"
+           placeholder="Credit History Years">
+
+    <input id="Total_Credit_Accounts" type="number"
+           placeholder="Total Credit Accounts">
+
+    <input id="Open_Credit_Lines" type="number"
+           placeholder="Open Credit Lines">
+
+    <input id="Credit_Cards" type="number"
+           placeholder="Credit Cards">
+
+    <input id="Installment_Accounts" type="number"
+           placeholder="Installment Accounts">
+
+    <input id="Real_Estate_Loans" type="number"
+           placeholder="Real Estate Loans">
+
+    <input id="Debt_Ratio" type="number" step="0.01"
+           placeholder="Debt Ratio">
+
+    <input id="Total_Debt" type="number"
+           placeholder="Total Debt">
+
+    <input id="Loan_Amount" type="number"
+           placeholder="Loan Amount">
+
+    <input id="Loan_Term_Months" type="number"
+           placeholder="Loan Term Months">
+
+    <input id="Interest_Rate" type="number" step="0.01"
+           placeholder="Interest Rate">
+
+    <input id="Credit_Inquiries_6M" type="number"
+           placeholder="Credit Inquiries - 6M">
+
+    <input id="Times_30_59_Days_Past_Due" type="number"
+           placeholder="30-59 Days Past Due">
+
+    <input id="Times_60_89_Days_Past_Due" type="number"
+           placeholder="60-89 Days Past Due">
+
+    <input id="Times_90_Plus_Days_Past_Due" type="number"
+           placeholder="90+ Days Past Due">
+
+    <input id="Times_120_Plus_Days_Past_Due" type="number"
+           placeholder="120+ Days Past Due">
+
+    <input id="Late_Payment_Count" type="number"
+           placeholder="Late Payment Count">
+
+    <input id="Previous_Bankruptcies" type="number"
+           placeholder="Previous Bankruptcies">
+
+    <input id="Tax_Liens" type="number"
+           placeholder="Tax Liens">
+
+</div>
+
+<button onclick="analyzeApplicant()">
+    Analyze Financial Risk
+</button>
+
+<div id="result">
+    Result will appear here...
+</div>
+
+<script>
+
+async function analyzeApplicant() {
+
+    const fields = [
+        "Age",
+        "Employment_Years",
+        "Number_of_Dependents",
+        "Monthly_Income",
+        "Annual_Income",
+        "Credit_Limit",
+        "Credit_Utilization",
+        "Credit_History_Years",
+        "Total_Credit_Accounts",
+        "Open_Credit_Lines",
+        "Credit_Cards",
+        "Installment_Accounts",
+        "Real_Estate_Loans",
+        "Debt_Ratio",
+        "Total_Debt",
+        "Loan_Amount",
+        "Loan_Term_Months",
+        "Interest_Rate",
+        "Credit_Inquiries_6M",
+        "Times_30_59_Days_Past_Due",
+        "Times_60_89_Days_Past_Due",
+        "Times_90_Plus_Days_Past_Due",
+        "Times_120_Plus_Days_Past_Due",
+        "Late_Payment_Count",
+        "Previous_Bankruptcies",
+        "Tax_Liens"
+    ];
+
+    const data = {};
+
+    fields.forEach(field => {
+        const value = document.getElementById(field).value;
+        data[field] = value === "" ? null : Number(value);
+    });
+
+    data["Gender"] = document.getElementById("Gender").value;
+
+    document.getElementById("result").innerText =
+        "Analyzing applicant...";
+
+    try {
+
+        const response = await fetch("/analyze", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        document.getElementById("result").innerText =
+            JSON.stringify(result, null, 2);
+
+    } catch (error) {
+
+        document.getElementById("result").innerText =
+            "Error: " + error;
+
+    }
+}
+
+</script>
+
+</body>
+</html>
