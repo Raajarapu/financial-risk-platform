@@ -1,0 +1,16 @@
+Delinquency Guidelines - Synthetic Project Knowledge
+
+Payment delinquency is an important credit-risk signal.
+
+The project derives a delinquency score using weighted payment events:
+
+- 30-59 days past due: weight 1
+- 60-89 days past due: weight 2
+- 90+ days past due: weight 3
+- 120+ days past due: weight 4
+
+More severe or repeated delinquency events can indicate increased repayment risk.
+
+Late payment count is also considered relative to credit history duration.
+
+The model should be interpreted as a probabilistic risk estimate, not a guaranteed prediction.
