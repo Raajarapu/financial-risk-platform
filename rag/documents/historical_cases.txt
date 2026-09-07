@@ -1,0 +1,12 @@
+Historical Cases - Synthetic Demonstration Examples
+
+Case A:
+An applicant with low debt burden, low credit utilization, stable income, and no recent delinquency represents a comparatively lower-risk profile.
+
+Case B:
+An applicant with moderate debt burden, elevated credit utilization, and several recent inquiries may require additional review.
+
+Case C:
+An applicant with high debt burden, high credit utilization, repeated delinquency, and adverse credit events represents an elevated-risk profile.
+
+These examples are synthetic and are included only to provide retrieval context for the demonstration RAG system.
